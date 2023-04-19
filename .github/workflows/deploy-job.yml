@@ -16,7 +16,6 @@ jobs:
   Prepare-environment:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v2
       - name: Delete old containers
         run: docker rm $(docker ps -aq) -f
       - name: Delete old images
@@ -24,6 +23,7 @@ jobs:
   Deploy:
     runs-on: self-hosted
     steps:
+      - uses: actions/checkout@v2
       - name: docker-compose
         continue-on-error: true
         run: docker-compose up -d
