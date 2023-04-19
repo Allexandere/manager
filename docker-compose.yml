@@ -1,5 +1,10 @@
 version: '3'
 
+networks:
+  web:
+    external: true
+    driver: bridge
+
 services:
 
   db:
@@ -10,7 +15,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - bridge
+      - web
     environment:
       POSTGRES_DB: manager
       POSTGRES_USER: postgres
@@ -26,7 +31,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     networks:
-      - bridge
+      - web
     ports:
       - "8082:8082"
     links:
