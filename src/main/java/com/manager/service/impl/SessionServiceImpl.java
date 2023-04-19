@@ -32,7 +32,7 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
         SessionEntity savedSession = sessionRepository.save(sessionEntity);
         log.info("saved " + sessionEntity);
         Session mappedSession = this.map(savedSession, Session.class);
-        mappedSession.setOwner(this.map(owner, User.class));
+        mappedSession.setOwner(new User(owner.getId()));
         return mappedSession;
     }
 }
