@@ -13,17 +13,18 @@ on:
     branches: [ "master", "develop" ]
 
 jobs:
-  Prepare-environment:
+  prepare-environment:
     runs-on: self-hosted
     steps:
       - name: Delete old containers
         run: docker rm $(docker ps -aq) -f
       - name: Delete old images
         run: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
-  Deploy:
+  deploy:
     runs-on: self-hosted
+    needs: prepare-environment
+    if: always()
     steps:
       - uses: actions/checkout@v2
       - name: docker-compose
-        continue-on-error: true
         run: docker-compose up -d
