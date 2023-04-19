@@ -15,6 +15,7 @@ import java.util.UUID;
 @RequestMapping("/manager")
 @Slf4j
 @RequiredArgsConstructor
+@CrossOrigin
 public class MainController {
 
     private final SessionService sessionService;
