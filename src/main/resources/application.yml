@@ -15,11 +15,13 @@ spring:
   #  password: ${POSTGRES_PASSWORD}
 
   jpa:
+    #show-sql: true
     generate-ddl: true
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
+        default_schema: public
         dialect: org.hibernate.dialect.PostgreSQLDialect
   application:
     name: manager

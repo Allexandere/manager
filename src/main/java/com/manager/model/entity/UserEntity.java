@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,5 +22,5 @@ public class UserEntity extends ComparableEntity {
     private UUID id;
     @OneToMany(mappedBy = "owner")
     @ToString.Exclude
-    private Set<SessionEntity> sessions;
+    private Set<SessionEntity> sessions = new HashSet<>();
 }
