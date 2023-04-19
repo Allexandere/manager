@@ -35,4 +35,4 @@ services:
       - db
 
 volumes:
-  scrapper-data:
+  manager-data:
