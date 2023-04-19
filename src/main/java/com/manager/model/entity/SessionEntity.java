@@ -1,9 +1,6 @@
 package com.manager.model.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -14,6 +11,7 @@ import java.util.UUID;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class SessionEntity extends ComparableEntity {
     @Id
     @GeneratedValue

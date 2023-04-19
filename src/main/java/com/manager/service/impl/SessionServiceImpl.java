@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.UUID;
 
 @Service
@@ -23,14 +22,6 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
 
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
-
-    @PostConstruct
-    void excludeTemplateMapping() {
-        this.createTypeMap(SessionEntity.class, Session.class)
-                .addMappings(mapper -> {
-                    mapper.skip(Session::setOwner);
-                });
-    }
 
     @Override
     public Session createSession(SessionDto sessionDto, UUID ownerId) {
