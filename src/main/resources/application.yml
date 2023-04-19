@@ -21,7 +21,6 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        default_schema: public
         dialect: org.hibernate.dialect.PostgreSQLDialect
   application:
     name: manager
