@@ -19,7 +19,7 @@ jobs:
       - name: Delete old containers
         run: docker rm $(docker ps -aq) -f
       - name: Delete old images
-        run: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+        run: docker rmi -f $(docker images -aq)
   deploy:
     runs-on: self-hosted
     needs: prepare-environment
