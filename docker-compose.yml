@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  db:
+    image: "postgres:alpine"
+    container_name: db
+    volumes:
+      - manager-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - bridge
+    environment:
+      POSTGRES_DB: manager
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  back:
+    build: .
+    image: manager
+    container_name: manager
+    environment:
+      DB_SERVER: db
+      POSTGRES_DB: manager
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - bridge
+    ports:
+      - "8082:8082"
+    links:
+      - db
+    depends_on:
+      - db
+
+volumes:
+  scrapper-data:
