@@ -25,7 +25,7 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
         UserEntity owner = userRepository.findById(ownerId).orElseThrow(IllegalArgumentException::new);
         SessionEntity sessionEntity = this.map(sessionDto, SessionEntity.class);
         sessionEntity.setOwner(owner);
-        sessionRepository.save(sessionEntity);
-        return this.map(sessionEntity, Session.class);
+        SessionEntity savedSession = sessionRepository.save(sessionEntity);
+        return this.map(savedSession, Session.class);
     }
 }
