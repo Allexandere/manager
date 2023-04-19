@@ -15,6 +15,7 @@ spring:
   #  password: ${POSTGRES_PASSWORD}
 
   jpa:
+    generate-ddl: true
     hibernate:
       ddl-auto: create
     properties:
