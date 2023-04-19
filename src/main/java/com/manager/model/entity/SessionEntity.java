@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "session", schema = "diploma")
+@Table(name = "session")
 @Getter
 @Setter
 @ToString

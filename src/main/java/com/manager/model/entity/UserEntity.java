@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user", schema = "diploma")
+@Table(name = "user")
 @Getter
 @Setter
 @ToString
