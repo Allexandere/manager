@@ -22,6 +22,7 @@ public class MainController {
     @PostMapping(path = "/{ownerId}/create-session")
     @ApiOperation("Create session")
     public Session createSession(@RequestBody SessionDto sessionDto, @PathVariable(name = "ownerId") UUID ownerId) {
+        log.info("MainController createSession got: " + sessionDto);
         return sessionService.createSession(sessionDto, ownerId);
     }
 
