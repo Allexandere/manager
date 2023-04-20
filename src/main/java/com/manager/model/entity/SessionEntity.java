@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -25,10 +24,8 @@ public class SessionEntity extends ComparableEntity {
     private String title;
     @Column(name = "description")
     private String description;
-    @GeneratedValue
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "s3_folder")
-    private UUID s3Folder;
+    private UUID s3Folder = UUID.randomUUID();
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private UserEntity owner;
