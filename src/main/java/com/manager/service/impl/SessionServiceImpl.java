@@ -37,17 +37,29 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
 
     @Override
     public Session createSession(SessionDto sessionDto, UUID ownerId) {
-        UserEntity owner = userRepository.findById(ownerId).orElseThrow(IllegalArgumentException::new);
+        UserEntity owner = getOwner(ownerId);
         if (folderAlreadyExists(sessionDto, owner)) {
             throw new IllegalArgumentException("Folder already exists");
         }
-        SessionEntity sessionEntity = this.map(sessionDto, SessionEntity.class);
-        sessionEntity.setOwner(owner);
-        SessionEntity savedSession = sessionRepository.save(sessionEntity);
+        SessionEntity savedSession = sessionRepository.save(mapToEntity(sessionDto, owner));
         createS3Folder(savedSession);
-        Session mappedSession = this.map(savedSession, Session.class);
+        return mapToSession(owner, savedSession);
+    }
+
+    private SessionEntity mapToEntity(SessionDto sessionDto, UserEntity owner) {
+        SessionEntity mappedSession = this.map(sessionDto, SessionEntity.class);
+        mappedSession.setOwner(owner);
+        return mappedSession;
+    }
+
+    private Session mapToSession(UserEntity owner, SessionEntity sessionEntity) {
+        Session mappedSession = this.map(sessionEntity, Session.class);
         mappedSession.setOwner(new User(owner.getId()));
         return mappedSession;
+    }
+
+    private UserEntity getOwner(UUID ownerId) {
+        return userRepository.findById(ownerId).orElseThrow(IllegalArgumentException::new);
     }
 
     private void createS3Folder(SessionEntity savedSession) {
