@@ -9,17 +9,17 @@ spring:
     username: postgres
     password: 1
   flyway:
-    #url: jdbc:postgresql://localhost/postgres
-    #user: postgres
-    #password: 1
-    #schemas: flyway
-    enabled: false
+    url: jdbc:postgresql://localhost/postgres
+    user: postgres
+    password: 1
+    schemas: diploma
+    enabled: true
 
   jpa:
     #show-sql: true
-    generate-ddl: true
-    hibernate:
-      ddl-auto: create
+    #generate-ddl: true
+    #hibernate:
+    #  ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

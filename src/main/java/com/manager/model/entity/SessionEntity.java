@@ -24,6 +24,9 @@ public class SessionEntity extends ComparableEntity {
     private String title;
     @Column(name = "description")
     private String description;
+    @GeneratedValue
+    @Column(name = "s3_folder")
+    private UUID s3Folder;
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private UserEntity owner;

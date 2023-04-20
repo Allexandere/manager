@@ -9,6 +9,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Session {
     private UUID id;
+    private UUID s3Folder;
     private String absolutePath;
     private User owner;
 }
