@@ -12,4 +12,6 @@ public class Session {
     private UUID s3Folder;
     private String absolutePath;
     private User owner;
+    private String title;
+    private String description;
 }
