@@ -4,32 +4,30 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "manager_session", schema = "diploma")
+@Table(name = "manager_snapshot", schema = "diploma")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class SessionEntity extends ComparableEntity {
+public class SnapshotEntity extends ComparableEntity {
     @Id
     @GeneratedValue
     private UUID id;
-    @Column(name = "absolute_path")
-    private String absolutePath;
     @Column(name = "title")
     private String title;
     @Column(name = "description")
     private String description;
+    @CreationTimestamp
+    @Column(name = "creation_date")
+    private LocalDateTime creationDate;
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
-    private UserEntity owner;
-    @OneToMany(mappedBy = "session")
-    @ToString.Exclude
-    private Set<SnapshotEntity> snapshots = new HashSet<>();
+    private SessionEntity session;
 }

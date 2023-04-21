@@ -4,11 +4,15 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.manager.model.dto.SessionDto;
+import com.manager.model.dto.SnapshotDto;
 import com.manager.model.entity.SessionEntity;
+import com.manager.model.entity.SnapshotEntity;
 import com.manager.model.entity.UserEntity;
 import com.manager.model.pojo.Session;
+import com.manager.model.pojo.Snapshot;
 import com.manager.model.pojo.User;
 import com.manager.repository.SessionRepository;
+import com.manager.repository.SnapshotRepository;
 import com.manager.repository.UserRepository;
 import com.manager.service.SessionService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,7 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
 
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
+    private final SnapshotRepository snapshotRepository;
 
     private static final String BASE_BUCKET = "24211693-897d379b-b4c3-4a54-9db8-2e29aeb00169";
     private final AmazonS3 client;
@@ -42,8 +47,33 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
             throw new IllegalArgumentException("Folder already exists");
         }
         SessionEntity savedSession = sessionRepository.save(mapToEntity(sessionDto, owner));
-        createS3Folder(savedSession);
+        createS3Folder(savedSession.getId().toString());
         return mapToSession(owner, savedSession);
+    }
+
+    @Override
+    public Snapshot createSnapshot(SnapshotDto snapshotDto) {
+        SessionEntity session = getSession(snapshotDto.getSessionId());
+        SnapshotEntity savedSnapshot = snapshotRepository.save(mapToEntity(snapshotDto, session));
+        String relativeS3Path = session.getId() + "/" + savedSnapshot.getId();
+        createS3Folder(relativeS3Path);
+        return mapToSnapshot(savedSnapshot, relativeS3Path);
+    }
+
+    private Snapshot mapToSnapshot(SnapshotEntity savedSnapshot, String relativeS3Path) {
+        Snapshot snapshot = this.map(savedSnapshot, Snapshot.class);
+        snapshot.setRelativeS3Path(relativeS3Path);
+        return snapshot;
+    }
+
+    private SnapshotEntity mapToEntity(SnapshotDto snapshotDto, SessionEntity session) {
+        SnapshotEntity mappedSnapshot = this.map(snapshotDto, SnapshotEntity.class);
+        mappedSnapshot.setSession(session);
+        return mappedSnapshot;
+    }
+
+    private SessionEntity getSession(UUID sessionId) {
+        return sessionRepository.findById(sessionId).orElseThrow(IllegalArgumentException::new);
     }
 
     private SessionEntity mapToEntity(SessionDto sessionDto, UserEntity owner) {
@@ -62,14 +92,14 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
         return userRepository.findById(ownerId).orElseThrow(IllegalArgumentException::new);
     }
 
-    private void createS3Folder(SessionEntity savedSession) {
+    private void createS3Folder(String path) {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(0);
 
         InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
 
         PutObjectRequest putObjectRequest = new PutObjectRequest(BASE_BUCKET,
-                savedSession.getS3Folder() + "/",
+                path + "/",
                 emptyContent,
                 metadata);
 

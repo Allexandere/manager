@@ -13,7 +13,7 @@ spring:
     user: postgres
     password: 1
     schemas: diploma
-    enabled: true
+    #enabled: false
 
   jpa:
     #show-sql: true
