@@ -20,7 +20,7 @@ public class UserEntity extends ComparableEntity {
     @Id
     @GeneratedValue
     private UUID id;
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @ToString.Exclude
     private Set<SessionEntity> sessions = new HashSet<>();
 }
