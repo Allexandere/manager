@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,8 +43,8 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
     }
 
     @Override
-    public Session createSession(SessionDto sessionDto, UUID ownerId) {
-        UserEntity owner = getOwner(ownerId);
+    public Session createSession(SessionDto sessionDto) {
+        UserEntity owner = getOwner(sessionDto.getOwnerId());
         if (folderAlreadyExists(sessionDto, owner)) {
             throw new IllegalArgumentException("Folder already exists");
         }
@@ -57,11 +59,28 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
         SnapshotEntity savedSnapshot = snapshotRepository.save(mapToEntity(snapshotDto, session));
         String relativeS3Path = session.getId() + "/" + savedSnapshot.getId();
         createS3Folder(relativeS3Path);
-        return mapToSnapshot(savedSnapshot, relativeS3Path);
+        return mapToSnapshot(savedSnapshot);
     }
 
-    private Snapshot mapToSnapshot(SnapshotEntity savedSnapshot, String relativeS3Path) {
-        Snapshot snapshot = this.map(savedSnapshot, Snapshot.class);
+    @Override
+    public List<Session> getSessions(UUID ownerId) {
+        UserEntity owner = getOwner(ownerId);
+        return owner.getSessions().stream()
+                .map(sessionEntity -> mapToSession(owner, sessionEntity))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Snapshot> getSnapshots(UUID sessionId) {
+        SessionEntity session = getSession(sessionId);
+        return session.getSnapshots().stream()
+                .map(this::mapToSnapshot)
+                .collect(Collectors.toList());
+    }
+
+    private Snapshot mapToSnapshot(SnapshotEntity snapshotEntity) {
+        Snapshot snapshot = this.map(snapshotEntity, Snapshot.class);
+        String relativeS3Path = snapshotEntity.getSession().getId() + "/" + snapshotEntity.getId();
         snapshot.setRelativeS3Path(relativeS3Path);
         return snapshot;
     }

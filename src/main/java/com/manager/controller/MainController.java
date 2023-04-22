@@ -9,11 +9,9 @@ import com.manager.service.SessionService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,9 +23,9 @@ public class MainController {
 
     @PostMapping(path = "/session")
     @ApiOperation("Create session")
-    public Session createSession(@RequestBody SessionDto sessionDto, @RequestParam(name = "ownerId") UUID ownerId) {
+    public Session createSession(@RequestBody SessionDto sessionDto) {
         log.info("MainController createSession got: " + sessionDto);
-        return sessionService.createSession(sessionDto, ownerId);
+        return sessionService.createSession(sessionDto);
     }
 
     @PostMapping(path = "/snapshot")
@@ -35,6 +33,18 @@ public class MainController {
     public Snapshot createSnapshot(@RequestBody SnapshotDto snapshotDto) {
         log.info("MainController createSnapshot got: " + snapshotDto);
         return sessionService.createSnapshot(snapshotDto);
+    }
+
+    @GetMapping(path = "/session")
+    @ApiOperation("Get all sessions of the session")
+    public List<Session> getSessions(@RequestParam(value = "ownerId") UUID ownerId) {
+        return sessionService.getSessions(ownerId);
+    }
+
+    @GetMapping(path = "/snapshot")
+    @ApiOperation("Get all snapshots of the session")
+    public List<Snapshot> getSnapshots(@RequestParam(value = "sessionId") UUID sessionId) {
+        return sessionService.getSnapshots(sessionId);
     }
 
 }
