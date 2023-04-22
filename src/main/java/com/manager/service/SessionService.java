@@ -16,4 +16,6 @@ public interface SessionService {
     List<Session> getSessions(UUID ownerId);
 
     List<Snapshot> getSnapshots(UUID sessionId);
+
+    Session getSession(UUID sessionId);
 }

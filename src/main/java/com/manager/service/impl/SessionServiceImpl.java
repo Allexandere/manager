@@ -50,12 +50,12 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
         }
         SessionEntity savedSession = sessionRepository.save(mapToEntity(sessionDto, owner));
         createS3Folder(savedSession.getId().toString());
-        return mapToSession(owner, savedSession);
+        return mapToSession(savedSession);
     }
 
     @Override
     public Snapshot createSnapshot(SnapshotDto snapshotDto) {
-        SessionEntity session = getSession(snapshotDto.getSessionId());
+        SessionEntity session = getSessionEntity(snapshotDto.getSessionId());
         SnapshotEntity savedSnapshot = snapshotRepository.save(mapToEntity(snapshotDto, session));
         String relativeS3Path = session.getId() + "/" + savedSnapshot.getId();
         createS3Folder(relativeS3Path);
@@ -66,16 +66,21 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
     public List<Session> getSessions(UUID ownerId) {
         UserEntity owner = getOwner(ownerId);
         return owner.getSessions().stream()
-                .map(sessionEntity -> mapToSession(owner, sessionEntity))
+                .map(this::mapToSession)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Snapshot> getSnapshots(UUID sessionId) {
-        SessionEntity session = getSession(sessionId);
+        SessionEntity session = getSessionEntity(sessionId);
         return session.getSnapshots().stream()
                 .map(this::mapToSnapshot)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Session getSession(UUID sessionId) {
+        return mapToSession(getSessionEntity(sessionId));
     }
 
     private Snapshot mapToSnapshot(SnapshotEntity snapshotEntity) {
@@ -91,7 +96,7 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
         return mappedSnapshot;
     }
 
-    private SessionEntity getSession(UUID sessionId) {
+    private SessionEntity getSessionEntity(UUID sessionId) {
         return sessionRepository.findById(sessionId).orElseThrow(IllegalArgumentException::new);
     }
 
@@ -101,9 +106,9 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
         return mappedSession;
     }
 
-    private Session mapToSession(UserEntity owner, SessionEntity sessionEntity) {
+    private Session mapToSession(SessionEntity sessionEntity) {
         Session mappedSession = this.map(sessionEntity, Session.class);
-        mappedSession.setOwner(new User(owner.getId()));
+        mappedSession.setOwner(new User(sessionEntity.getOwner().getId()));
         return mappedSession;
     }
 

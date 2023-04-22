@@ -36,9 +36,15 @@ public class MainController {
     }
 
     @GetMapping(path = "/session")
-    @ApiOperation("Get all sessions of the session")
+    @ApiOperation("Get all sessions of the owner")
     public List<Session> getSessions(@RequestParam(value = "ownerId") UUID ownerId) {
         return sessionService.getSessions(ownerId);
+    }
+
+    @GetMapping(path = "/session")
+    @ApiOperation("Get specific session")
+    public Session getSession(@RequestParam(value = "sessionId") UUID sessionId) {
+        return sessionService.getSession(sessionId);
     }
 
     @GetMapping(path = "/snapshot")
