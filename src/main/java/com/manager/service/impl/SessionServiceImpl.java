@@ -85,7 +85,7 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
 
     private Snapshot mapToSnapshot(SnapshotEntity snapshotEntity) {
         Snapshot snapshot = this.map(snapshotEntity, Snapshot.class);
-        String relativeS3Path = snapshotEntity.getSession().getId() + "/" + snapshotEntity.getId();
+        String relativeS3Path = snapshotEntity.getSession().getId() + "/" + snapshotEntity.getId() + "/";
         snapshot.setRelativeS3Path(relativeS3Path);
         return snapshot;
     }
