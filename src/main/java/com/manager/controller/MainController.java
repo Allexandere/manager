@@ -35,7 +35,7 @@ public class MainController {
         return sessionService.createSnapshot(snapshotDto);
     }
 
-    @GetMapping(path = "/session")
+    @GetMapping(path = "/sessions")
     @ApiOperation("Get all sessions of the owner")
     public List<Session> getSessions(@RequestParam(value = "ownerId") UUID ownerId) {
         return sessionService.getSessions(ownerId);
@@ -47,7 +47,7 @@ public class MainController {
         return sessionService.getSession(sessionId);
     }
 
-    @GetMapping(path = "/snapshot")
+    @GetMapping(path = "/snapshots")
     @ApiOperation("Get all snapshots of the session")
     public List<Snapshot> getSnapshots(@RequestParam(value = "sessionId") UUID sessionId) {
         return sessionService.getSnapshots(sessionId);
