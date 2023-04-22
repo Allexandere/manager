@@ -53,4 +53,10 @@ public class MainController {
         return sessionService.getSnapshots(sessionId);
     }
 
+    @GetMapping(path = "/snapshot")
+    @ApiOperation("Get specific session")
+    public Snapshot getSnapshot(@RequestParam(value = "snapshotId") UUID snapshotId) {
+        return sessionService.getSnapshot(snapshotId);
+    }
+
 }

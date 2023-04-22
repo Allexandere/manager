@@ -83,6 +83,11 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
         return mapToSession(getSessionEntity(sessionId));
     }
 
+    @Override
+    public Snapshot getSnapshot(UUID snapshotId) {
+        return mapToSnapshot(getSnapshotEntity(snapshotId));
+    }
+
     private Snapshot mapToSnapshot(SnapshotEntity snapshotEntity) {
         Snapshot snapshot = this.map(snapshotEntity, Snapshot.class);
         String relativeS3Path = snapshotEntity.getSession().getId() + "/" + snapshotEntity.getId() + "/";
@@ -98,6 +103,10 @@ public class SessionServiceImpl extends ModelMapper implements SessionService {
 
     private SessionEntity getSessionEntity(UUID sessionId) {
         return sessionRepository.findById(sessionId).orElseThrow(IllegalArgumentException::new);
+    }
+
+    private SnapshotEntity getSnapshotEntity(UUID snapshotId) {
+        return snapshotRepository.findById(snapshotId).orElseThrow(IllegalArgumentException::new);
     }
 
     private SessionEntity mapToEntity(SessionDto sessionDto, UserEntity owner) {
