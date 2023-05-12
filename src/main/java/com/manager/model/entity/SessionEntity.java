@@ -29,7 +29,7 @@ public class SessionEntity extends ComparableEntity {
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private UserEntity owner;
-    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "session", fetch = FetchType.EAGER, orphanRemoval = true)
     @ToString.Exclude
     private Set<SnapshotEntity> snapshots = new HashSet<>();
 }

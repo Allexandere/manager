@@ -25,14 +25,11 @@ public class ApiExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .path(req.getContextPath() + req.getServletPath());
 
-        /*
-        if (e.getClass().getSuperclass().equals(EndpointServiceException.class)) {
-            int httpCode = e.getClass().getAnnotation(ApiErrorCode.class).value();
+        if (e.getClass().getSuperclass().equals(ManagerException.class)) {
+            int httpCode = e.getClass().getAnnotation(HttpErrorCode.class).value();
             return new ResponseEntity<>(apiErrorBuilder.message(e.getMessage()).build(),
                     HttpStatus.valueOf(httpCode));
         }
-
-         */
 
         return new ResponseEntity<>(apiErrorBuilder.message(e.getMessage()).build(),
                 HttpStatus.INTERNAL_SERVER_ERROR);

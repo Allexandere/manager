@@ -1,0 +1,19 @@
+server:
+  port: 8082
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  main:
+    allow-bean-definition-overriding: true
+  flyway:
+    enabled: false
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: none
+      use_sql_comments: true
+      format_sql: true
+
+s3:
+  base-bucket: 24211693-897d379b-b4c3-4a54-9db8-2e29aeb00169
