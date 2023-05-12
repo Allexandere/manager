@@ -35,7 +35,6 @@ jobs:
   deploy:
     runs-on: self-hosted
     needs: prepare-environment
-    if: always()
     steps:
       - uses: actions/checkout@v2
       - name: docker-compose
