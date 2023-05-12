@@ -25,6 +25,7 @@ jobs:
       - name: run tests
         run: mvn test
   prepare-environment:
+    needs: test
     runs-on: self-hosted
     steps:
       - name: Delete old containers
