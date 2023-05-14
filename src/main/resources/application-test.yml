@@ -36,3 +36,7 @@ springfox:
 
 s3:
   base-bucket: 24211693-897d379b-b4c3-4a54-9db8-2e29aeb00169
+
+logging:
+  logstash:
+    enabled: false

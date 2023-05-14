@@ -3,4 +3,4 @@ WORKDIR /app
 COPY . .
 EXPOSE 8082
 RUN mvn install --no-transfer-progress -DskipTests=true
-ENTRYPOINT ["mvn", "spring-boot:run"]
+ENTRYPOINT ["mvn", "spring-boot:run", "-Dspring-boot.run.profiles=prod"]

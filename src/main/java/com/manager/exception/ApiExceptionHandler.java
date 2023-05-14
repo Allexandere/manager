@@ -6,6 +6,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -29,6 +30,11 @@ public class ApiExceptionHandler {
             int httpCode = e.getClass().getAnnotation(HttpErrorCode.class).value();
             return new ResponseEntity<>(apiErrorBuilder.message(e.getMessage()).build(),
                     HttpStatus.valueOf(httpCode));
+        }
+
+        if (e.getClass().equals(MissingServletRequestParameterException.class)) {
+            return new ResponseEntity<>(apiErrorBuilder.message(e.getMessage()).build(),
+                    HttpStatus.valueOf(400));
         }
 
         return new ResponseEntity<>(apiErrorBuilder.message(e.getMessage()).build(),
