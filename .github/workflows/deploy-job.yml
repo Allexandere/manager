@@ -8,7 +8,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout repo
       - uses: actions/checkout@v3
+      - name: set up Java and Maven
       - uses: actions/setup-java@v3
         with:
           java-version: '11'
@@ -28,6 +30,7 @@ jobs:
     runs-on: self-hosted
     needs: prepare-environment
     steps:
-      - uses: actions/checkout@v2
+      - name: checkout repo
+      - uses: actions/checkout@v3
       - name: docker-compose
         run: docker-compose up -d
