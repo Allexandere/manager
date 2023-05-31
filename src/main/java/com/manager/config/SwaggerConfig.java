@@ -2,7 +2,6 @@ package com.manager.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -21,11 +20,6 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.manager.controller"))
                 .paths(PathSelectors.any())
                 .build();
-    }
-
-    @Bean
-    public InternalResourceViewResolver defaultViewResolver() {
-        return new InternalResourceViewResolver();
     }
 
 }
