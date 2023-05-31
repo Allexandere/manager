@@ -17,6 +17,7 @@ import java.util.UUID;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@CrossOrigin
 public class MainController {
 
     private final SessionService sessionService;

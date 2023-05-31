@@ -1,9 +1,9 @@
 package com.manager.service;
 
-import com.amazonaws.services.elasticache.model.SnapshotNotFoundException;
 import com.manager.exception.throwables.FolderAlreadyExistsException;
 import com.manager.exception.throwables.OwnerNotFoundException;
 import com.manager.exception.throwables.SessionNotFoundException;
+import com.manager.exception.throwables.SnapshotNotFoundException;
 import com.manager.model.dto.SessionDto;
 import com.manager.model.dto.SnapshotDto;
 import com.manager.model.entity.SessionEntity;

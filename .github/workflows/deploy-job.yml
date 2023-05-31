@@ -22,10 +22,10 @@ jobs:
     needs: test
     runs-on: self-hosted
     steps:
-      - name: Stop and remove containers, networks
-        run: docker-compose down
-      - name: Remove unused data
-        run: docker system prune -a -f
+      - name: Delete old containers and images
+        run: docker rm -vf $(docker ps -aq)
+      - name: Delete old images
+        run: docker rmi -f $(docker images -aq)
   deploy:
     runs-on: self-hosted
     needs: prepare-environment
