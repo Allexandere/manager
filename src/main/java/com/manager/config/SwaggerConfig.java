@@ -16,6 +16,7 @@ public class SwaggerConfig {
     @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .host("http://24manager.ru")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.manager.controller"))
                 .paths(PathSelectors.any())
